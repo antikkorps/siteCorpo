@@ -1,0 +1,32 @@
+# Backend PocketBase
+services:
+  backend:
+    build:
+      context: ./apps/backend
+      dockerfile: Dockerfile
+    container_name: pocketbase_backend
+    ports:
+      - "8090:8090"
+    volumes:
+      - pocketbase_data:/app/pb_data
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
+  # Frontend Nuxt
+  frontend:
+    build:
+      context: ./apps/frontend
+      dockerfile: Dockerfile
+    container_name: nuxt_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - POCKETBASE_URL: http://localhost:8090
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  pocketbase_data:

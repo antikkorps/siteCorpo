@@ -1,0 +1,39 @@
+# Configuration Fly.io pour Strapi Backend
+app = "your-app-backend"
+primary_region = "cdg"
+
+[build]
+  dockerfile = "apps/backend/Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+  DATABASE_CLIENT = "postgres"
+  HOST = "0.0.0.0"
+  PORT = "1337"
+
+[http_service]
+  internal_port = 1337
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+[[http_service.checks]]
+  grace_period = "10s"
+  interval = "30s"
+  method = "GET"
+  timeout = "5s"
+  path = "/api/articles"
+
+[vm]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 512
+
+[[mounts]]
+  source = "strapi_uploads"
+  destination = "/app/public/uploads"
+
+[deploy]
+  release_command = "npm run build" 

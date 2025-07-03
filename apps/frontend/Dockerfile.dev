@@ -1,0 +1,19 @@
+# Dockerfile de développement pour Nuxt Frontend
+FROM node:18-alpine
+
+# Définir le répertoire de travail
+WORKDIR /app
+
+# Installer les dépendances système nécessaires
+RUN apk add --no-cache libc6-compat
+
+# Définir les variables d'environnement
+ENV NODE_ENV=development
+ENV NUXT_HOST=0.0.0.0
+ENV NUXT_PORT=3000
+
+# Exposer le port
+EXPOSE 3000
+
+# Commande par défaut pour le développement
+CMD ["sh", "-c", "npm install && npm run dev"] 
